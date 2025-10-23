@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int liverGoals, muGoals;
+
+    cout << "Nhap so ban thang cua Liverpool: ";
+    cin >> liverGoals;
+
+    cout << "Nhap so ban thang cua Manchester United: ";
+    cin >> muGoals;
+
+    cout << "\n--- KET QUA TRAN DAU ---\n";
+    cout << "Ti so: Liverpool " << liverGoals << " - " << muGoals << " Manchester United\n";
+
+    if (liverGoals > muGoals) {
+        cout << "=> Liverpool thang voi ti so " 
+             << liverGoals << " - " << muGoals << "!\n";
+    } 
+    else if (liverGoals < muGoals) {
+        cout << "=> Manchester United thang voi ti so " 
+             << muGoals << " - " << liverGoals << "!\n";
+    } 
+    else {
+        cout << "=> Hai doi hoa nhau voi ti so " 
+             << liverGoals << " - " << muGoals << ".\n";
+    }
+
+    return 0;
+}
