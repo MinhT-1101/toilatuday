@@ -1,0 +1,39 @@
+#include <iostream>
+#include <iomanip> // để định dạng số thập phân
+using namespace std;
+
+int main() {
+    int n;                 // số cầu thủ Barca mua
+    double tongGiaTri = 0; // tổng giá trị (triệu bảng)
+
+    cout << "Nhap so cau thu Barca da mua: ";
+    cin >> n;
+
+    // kiểm tra hợp lệ
+    if (n <= 0) {
+        cout << "So cau thu khong hop le!\n";
+        return 0;
+    }
+
+    cout << "Nhap gia tri tung cau thu (trieu bang, co the co so thap phan):\n";
+    for (int i = 1; i <= n; i++) {
+        double giaTri;
+        cout << "  Cau thu thu " << i << ": ";
+        cin >> giaTri;
+        tongGiaTri += giaTri;
+    }
+
+    cout << fixed << setprecision(1); // hiển thị 1 chữ số sau dấu phẩy
+
+    cout << "\n--- THONG KE MUA SAM ---\n";
+    cout << "Barca da mua " << n << " cau thu voi tong gia tri "
+         << tongGiaTri << " trieu bang.\n";
+
+    if (tongGiaTri > 100) {
+        cout << "=> Da vuot 100 trieu bang - vi pham luat cong bang tai chinh!\n";
+    } else {
+        cout << "=> Chua vuot 100 trieu bang - van trong gioi han hop le.\n";
+    }
+
+    return 0;
+}
