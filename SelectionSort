@@ -1,0 +1,48 @@
+#include <iostream>
+using namespace std;
+
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int min_idx = i;
+
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        }
+
+        if (min_idx != i) {
+            int temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+
+        // In ra mảng sau mỗi lần sắp xếp (để theo dõi)
+        cout << "Buoc " << i + 1 << ": ";
+        for (int k = 0; k < n; k++) {
+            cout << arr[k] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    int arr[] = {3, 10, 1, 23, 103, 34, 17, 53, 64, 71};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    cout << "Mang ban dau: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl << endl;
+
+    selectionSort(arr, n);
+
+    cout << "\nMang sau khi da sap xep: ";
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
