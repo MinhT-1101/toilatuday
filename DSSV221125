@@ -71,7 +71,7 @@ void InDanhSach(DanhSach* dssv) {
     else {
         while (node != NULL) {
             cout << "\n# " << i << "\t";
-            cout << "node-" << node;  // ✅ Sửa: dùng node thay vì &node->data
+            cout << "node-" << node;  // 
             
             cout << "\nnode->HoVaTen:\t\t" << node->HoVaTen;
             cout << "\nnode->YoB:\t\t" << node->YoB;
