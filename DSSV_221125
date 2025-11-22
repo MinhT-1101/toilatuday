@@ -1,0 +1,148 @@
+/* 
+Ho va ten: Bach Minh Tu 
+MSSV 202414424 
+Ma lop: 163082
+De bai: Cai dat cac phuong thuc quan ly danh sach sinh vien voi cac thuoc tinh da cho
+*/ 
+
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+// Khai bao 
+
+struct Node {
+    string HoVaTen;
+    int YoB;
+    int MSSV;
+    float CPA;               
+    Node* next;              
+};
+
+struct DanhSach {
+    Node* firstNode;         
+};
+
+void DanhSachRong(DanhSach* dssv) {
+    dssv->firstNode = NULL;
+}
+
+// Tinh do dai danh sach
+int DoDaiDanhSach(DanhSach* dssv) {
+    int count = 0;
+    Node* current = dssv ->firstNode;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+// Them sinh vien vao danh sach
+void DanhSach_CoSinhVien(DanhSach* dssv, string HoVaTen, int MSSV, int YoB, float CPA) {
+    Node* newNode = new Node();
+    newNode ->HoVaTen = HoVaTen;
+    newNode ->MSSV = MSSV;
+    newNode ->YoB = YoB;
+    newNode ->CPA = CPA;
+    newNode ->next = NULL;
+    
+    if (dssv->firstNode == NULL) {
+        dssv->firstNode = newNode;
+    } else {
+        Node* current = dssv ->firstNode;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+}
+
+// In ra danh sach
+void InDanhSach(DanhSach* dssv) {
+    Node* node = dssv->firstNode;
+    int i = DoDaiDanhSach(dssv);
+    cout << "\nDanh sach sinh vien:\t" << i;
+    
+    if (dssv->firstNode == NULL)
+        cout << "\nDanh sach rong\r\n";
+    else {
+        while (node != NULL) {
+            cout << "\n# " << i << "\t";
+            cout << "node-" << node;  
+            cout << "\nnode->HoVaTen:\t\t" << node->HoVaTen;
+            cout << "\nnode->YoB:\t\t" << node->YoB;
+            cout << "\nnode->MSSV:\t\t" << node->MSSV;
+            cout << "\nnode->CPA:\t\t" << node->CPA;
+            cout << "\nnode->next:\t\t" << node->next << "\n";
+            
+            node = node->next;
+            i--;
+        }
+        cout << endl;
+    }
+}
+
+// Dem so sinh vien CPA > 3.2
+int DemSinhVienGioi(DanhSach* dssv) {
+    int count = 0;
+    Node* current = dssv ->firstNode;
+    while (current != NULL) {
+        if (current->CPA > 3.2) {  
+            count++;
+        }
+        current = current->next;
+    }
+    return count;
+}
+
+// Sap xep theo CPA tang dan
+void XepDiemSV(DanhSach* dssv) {
+    if (dssv ->firstNode == NULL || dssv ->firstNode ->next == NULL)
+        return;
+    
+    Node* i = dssv ->firstNode;
+    while (i != NULL) {
+        Node* j = i->next;
+        while (j != NULL) {
+            if (i->CPA > j->CPA) {
+                swap(i->HoVaTen, j->HoVaTen);
+                swap(i->YoB, j->YoB);
+                swap(i->MSSV, j->MSSV);
+                swap(i->CPA, j->CPA);
+            }
+            j = j->next;
+        }
+        i = i->next;
+    }
+}
+
+// Them 1 sinh vien va sap xep
+void SapXepSinhVien(DanhSach* dssv, string HoVaTen, int YoB, int MSSV, float CPA) {
+    Node* newNode = new Node();
+    newNode ->HoVaTen = HoVaTen;
+    newNode ->MSSV = MSSV;
+    newNode ->YoB = YoB;
+    newNode ->CPA = CPA;
+   
+    if (dssv->firstNode == NULL) {
+        dssv->firstNode = newNode;
+        return;
+    }
+    
+    if (newNode->CPA < dssv->firstNode->CPA) {
+        newNode->next = dssv->firstNode;
+        dssv->firstNode = newNode;
+        return;
+    }
+    
+    Node* current = dssv->firstNode;
+    while (current->next != NULL && current->next->CPA < newNode->CPA) {
+        current = current->next;
+    }
+    newNode->next = current->next;
+    current->next = newNode;
+}
+
