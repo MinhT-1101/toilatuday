@@ -1,0 +1,115 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int duLieu;
+    Node *trai, *phai;
+};
+
+Node* taoNode(int giaTri) {
+    if (giaTri == -1) return NULL;
+    Node* moi = new Node();
+    moi->duLieu = giaTri;
+    moi->trai = moi->phai = NULL;
+    return moi;
+}
+
+Node* nhapCay() {
+    int giaTri;
+    cout << "Nhap gia tri nut goc (-1 neu cay rong): ";
+    cin >> giaTri;
+    if (giaTri == -1) return NULL;
+
+    Node* goc = taoNode(giaTri);
+    Node** queue = new Node*[110106];
+    int dau = 0, cuoi = 0;
+    queue[cuoi++] = goc;
+
+    while (dau < cuoi) {
+        Node* hienTai = queue[dau++];
+        
+        int trai, phai;
+        cout << "Nhap con trai cua " << hienTai->duLieu << " (-1 neu khong co): ";
+        cin >> trai;
+        if (trai != -1) {
+            hienTai->trai = taoNode(trai);
+            queue[cuoi++] = hienTai->trai;
+        }
+
+        cout << "Nhap con phai cua " << hienTai->duLieu << " (-1 neu khong co): ";
+        cin >> phai;
+        if (phai != -1) {
+            hienTai->phai = taoNode(phai);
+            queue[cuoi++] = hienTai->phai;
+        }
+    }
+    delete[] queue;
+    return goc;
+}
+
+bool KiemTraGiongNhau(Node* goc1, Node* goc2) {
+    if (goc1 == NULL && goc2 == NULL) return true;
+    if (goc1 == NULL || goc2 == NULL) return false;
+
+    Node** stack1 = new Node*[110106];
+    Node** stack2 = new Node*[110106];
+    int top = 0;
+
+    stack1[top] = goc1;
+    stack2[top] = goc2;
+    top++;
+
+    while (top > 0) {
+        top--;
+        Node* n1 = stack1[top];
+        Node* n2 = stack2[top];
+
+        if (n1->duLieu != n2->duLieu) {
+            delete[] stack1; 
+            delete[] stack2;
+            return false;
+        }
+
+        if (n1->phai && n2->phai) {
+            stack1[top] = n1->phai;
+            stack2[top] = n2->phai;
+            top++;
+        } else if (n1->phai || n2->phai) {
+            delete[] stack1; 
+            delete[] stack2;
+            return false;
+        }
+
+        if (n1->trai && n2->trai) {
+            stack1[top] = n1->trai;
+            stack2[top] = n2->trai;
+            top++;
+        } else if (n1->trai || n2->trai) {
+            delete[] stack1; 
+            delete[] stack2;
+            return false;
+        }
+    }
+
+    delete[] stack1; 
+    delete[] stack2;
+    return true;
+}
+
+int main() {
+    cout << "--- NHAP CAY THU NHAT ---" << endl;
+    Node* Cay1 = nhapCay();
+
+    cout << "\n--- NHAP CAY THU HAI ---" << endl;
+    Node* Cay2 = nhapCay();
+
+    cout << "\n--- KET QUA SO SANH ---" << endl;
+    if (KiemTraGiongNhau(Cay1, Cay2)) {
+        cout << "Giong nhau" << endl;
+    } else {
+        cout << "Khac nhau" << endl;
+    }
+
+    return 0;
+}
