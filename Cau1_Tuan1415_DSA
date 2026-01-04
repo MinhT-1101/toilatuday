@@ -1,0 +1,72 @@
+#include <iostream>
+using namespace std;
+
+int Cay[10] = {4, 1, 3, 2, 16, 9, 10, 14, 8, 7};
+int n = 10;
+
+void DoiViTri(int &a, int &b) {
+    int sub = a;
+    a = b;
+    b = sub;
+}
+
+void DuyetTruoc(int i) {
+    if (i >= n) return;
+    cout << Cay[i] << " ";
+    DuyetTruoc(2 * i + 1);
+    DuyetTruoc(2 * i + 2);
+}
+
+void DuyetGiua(int i) {
+    if (i >= n) return;
+    DuyetGiua(2 * i + 1);
+    cout << Cay[i] << " ";
+    DuyetGiua(2 * i + 2);
+}
+
+void DuyetSau(int i) {
+    if (i >= n) return;
+    DuyetSau(2 * i + 1);
+    DuyetSau(2 * i + 2);
+    cout << Cay[i] << " ";
+}
+
+void VunDong(int arr[], int n, int i) {
+    int lonNhat = i; 
+    int trai = 2 * i + 1; 
+    int phai = 2 * i + 2; 
+
+    if (trai < n && arr[trai] > arr[lonNhat])
+        lonNhat = trai;
+
+    if (phai < n && arr[phai] > arr[lonNhat])
+        lonNhat = phai;
+
+    if (lonNhat != i) {
+        DoiViTri(arr[i], arr[lonNhat]);
+        VunDong(arr, n, lonNhat);
+    }
+}
+
+void XayDungDong(int arr[], int n) {
+    for (int i = (n / 2) - 1; i >= 0; i--) {
+        VunDong(arr, n, i);
+    }
+}
+
+int main() {
+    // Thực hiện yêu cầu 1
+    cout << "---: KET QUA DUYET CAY ---" << endl;
+    cout << "Duyet Truoc: "; DuyetTruoc(0); cout << endl;
+    cout << "Duyet Giua:  "; DuyetGiua(0);  cout << endl;
+    cout << "Duyet Sau:   "; DuyetSau(0);   cout << endl;
+
+    // Thực hiện yêu cầu 2
+    XayDungDong(Cay, n);
+    
+    cout << "\n--- CAY DA VUN DONG (DUYET TRUOC) ---" << endl;
+    DuyetTruoc(0);
+    cout << endl;
+
+    return 0;
+}
