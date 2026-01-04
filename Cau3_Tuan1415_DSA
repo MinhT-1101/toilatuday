@@ -1,0 +1,148 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int value;
+    Node* left;
+    Node* right;
+    Node(int v, Node* l = NULL, Node* r = NULL) {
+        value = v;
+        left = l;
+        right = r;
+    }
+};
+
+class BSTree {
+private:
+    Node* root;
+
+    void insert(int val1, Node*& t) {
+        if (t == NULL) {
+            t = new Node(val1);
+        } else if (val1 < t->value) {
+            insert(val1, t->left);
+        } else if (val1 > t->value) {
+            insert(val1, t->right);
+        }
+    }
+
+    Node* search(int val2, Node* t) {
+        if (t == NULL) return NULL;
+        if (val2 < t->value) return search(val2, t->left);
+        if (val2 > t->value) return search(val2, t->right);
+        return t;
+    }
+
+    void makeEmpty(Node*& t) {
+        if (t != NULL) {
+            makeEmpty(t->left);
+            makeEmpty(t->right);
+            delete t;
+            t = NULL;
+        }
+    }
+
+public:
+    BSTree() {
+        root = NULL;
+    }
+
+    ~BSTree() {
+        makeEmpty(root);
+    }
+
+    void insert(int val1) {
+        insert(val1, root);
+    }
+
+    Node* search(int val2) {
+        return search(val2, root);
+    }
+
+    bool isEmpty() {
+        return root == NULL;
+    }
+
+    Node* getRoot() {
+        return root;
+    }
+};
+
+void PREORDER_travl(Node* t) {
+    if (t != NULL) {
+        cout << t->value << " ";
+        PREORDER_travl(t->left);
+        PREORDER_travl(t->right);
+    }
+}
+
+void INORDER_travl(Node* t) {
+    if (t != NULL) {
+        INORDER_travl(t->left);
+        cout << t->value << " ";
+        INORDER_travl(t->right);
+    }
+}
+
+void POSTORDER_travl(Node* t) {
+    if (t != NULL) {
+        POSTORDER_travl(t->left);
+        POSTORDER_travl(t->right);
+        cout << t->value << " ";
+    }
+}
+
+int main() {
+    BSTree bst;
+    int choice, n, x;
+
+    do {
+        cout << "\n--- CHUONG TRINH CAY NHI PHAN TIM KIEM ---" << endl;
+        cout << "1. Nhap day phan tu" << endl;
+        cout << "2. Duyet cay (Truoc - Giua - Sau)" << endl;
+        cout << "3. Tim kiem phan tu" << endl;
+        cout << "0. Thoat" << endl;
+        cout << "Lua chon: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Nhap so luong phan tu muon them: ";
+                cin >> n;
+                cout << "Nhap " << n << " gia tri (cach nhau boi dau cach): ";
+                for (int i = 0; i < n; i++) {
+                    cin >> x;
+                    bst.insert(x);
+                }
+                cout << "=> Da them thanh cong." << endl;
+                break;
+            case 2:
+                if (bst.isEmpty()) {
+                    cout << "=> Cay dang rong!" << endl;
+                } else {
+                    cout << "\nKet qua duyet tu Root:" << endl;
+                    cout << "- Duyet truoc: "; PREORDER_travl(bst.getRoot());
+                    cout << "\n- Duyet giua : "; INORDER_travl(bst.getRoot());
+                    cout << "\n- Duyet sau  : "; POSTORDER_travl(bst.getRoot());
+                    cout << endl;
+                }
+                break;
+            case 3:
+                cout << "Nhap gia tri can tim: ";
+                cin >> x;
+                if (bst.search(x) != NULL)
+                    cout << "=> KET QUA: CO phan tu " << x << " trong cay." << endl;
+                else
+                    cout << "=> KET QUA: KHONG tim thay " << x << endl;
+                break;
+            case 0:
+                cout << "Tam biet!" << endl;
+                break;
+            default:
+                cout << "Lua chon khong hop le!" << endl;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
